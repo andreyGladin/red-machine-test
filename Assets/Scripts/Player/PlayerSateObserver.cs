@@ -18,8 +18,17 @@ namespace Player
         {
             EventsController.Subscribe<EventModels.Game.NodeTapped>(this, OnNodeTapped);
             EventsController.Subscribe<EventModels.Game.PlayerFingerRemoved>(this, OnPlayerFingerRemoved);
+            EventsController.Subscribe<EventModels.Game.DragStarted>(this, OnPlayerDragStart);
         }
-        
+
+        private void OnPlayerDragStart(EventModels.Game.DragStarted obj)
+        {
+            if (PlayerController.PlayerState != PlayerState.Connecting)
+            {
+                _setStateAction?.Invoke(PlayerState.Scrolling);
+            }
+        }
+
         public void Unsubscribe()
         {
             EventsController.Unsubscribe<EventModels.Game.NodeTapped>(OnNodeTapped);

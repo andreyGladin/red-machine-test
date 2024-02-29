@@ -10,6 +10,11 @@ namespace Events
             {
                 
             }
+            
+            public struct DragStarted : IEvent
+            {
+                
+            }
 
             public struct PlayerFingerRemoved : IEvent
             {

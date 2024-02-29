@@ -18,6 +18,7 @@ namespace Connection
         public Vector2 CenterPosition => transform.position;
         public Color Color => spriteRenderer.color;
         public bool IsEmpty => isEmpty;
+        public Bounds Bounds => _bounds;
 
         private Bounds _bounds;
         
@@ -25,11 +26,6 @@ namespace Connection
         private void Awake()
         {
             _bounds = spriteRenderer.bounds;
-        }
-
-        public bool IsInBounds(Vector3 point)
-        {
-            return _bounds.Contains(point);
         }
 
         public void AddColor(Color additiveColor)

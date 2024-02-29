@@ -38,7 +38,8 @@ namespace Connection
             }
 
             _clickHandler = ClickHandler.Instance;
-            _clickHandler.SetDragEventHandlers(OnDragStart, OnDragEnd);
+            _clickHandler.DragStartEvent += OnDragStart;
+            _clickHandler.DragEndEvent += OnDragEnd;
         }
 
         private void OnDestroy()
@@ -73,11 +74,22 @@ namespace Connection
             Destroy(_currentColorConnector.gameObject);
         }
 
+        public Bounds CalculateNodesBounds()
+        {
+            var bounds = new Bounds();
+            foreach (var node in _nodes)
+            {
+                bounds.Encapsulate(node.Bounds);
+            }
+
+            return bounds;
+        }
+
         public bool TryGetColorNodeInPosition(Vector2 position, out ColorNode result)
         {
             foreach (var colorNode in _nodes)
             {
-                if (!colorNode.IsInBounds(position))
+                if (!colorNode.Bounds.Contains(position))
                     continue;
 
                 result = colorNode;
@@ -144,7 +156,7 @@ namespace Connection
 
             _currentConnectionMainNode = null;
         }
-
+        
         private void OnTargetCompletionChange(ColorNodeTarget nodeTarget, bool isCompleted)
         {
             if (!_completionsByTargetNode.ContainsKey(nodeTarget))
